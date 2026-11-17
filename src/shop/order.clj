@@ -10,7 +10,7 @@
                  ::tk/transitions [{::tk/on ::paid ::tk/to ::paid}
                                    {::tk/on ::declined ::tk/to ::cart}]}
                 {::tk/name ::paid
-                 ::tk/transitions [{::tk/on ::ship ::tk/to ::shipped}]}
+                 ::tk/transitions [{::tk/on ::ship ::tk/to ::shiped}]}
                 {::tk/name ::shipped}
                 {::tk/name ::cancelled}]
    ::tk/state ::cart})
