@@ -86,6 +86,11 @@ dependency.
 
 ## Break it
 
+![The order machine in Emacs: a rush transition breaks the team's rule; a mistyped state is an error](docs/images/demo-machine.gif)
+
+*Scenarios 2 and 3 in Emacs: each change is marked where it's written, under
+the line, the moment the file is saved.*
+
 Each `scenario/*` branch is one change away from `main`, and gives one
 finding. Nothing is run to find them.
 
