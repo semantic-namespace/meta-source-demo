@@ -8,7 +8,8 @@
                                    {::tk/on ::cancel ::tk/to ::cancelled}]}
                 {::tk/name ::paying
                  ::tk/transitions [{::tk/on ::paid ::tk/to ::paid}
-                                   {::tk/on ::declined ::tk/to ::cart}]}
+                                   {::tk/on ::declined ::tk/to ::cart}
+                                   {::tk/on ::rush ::tk/to ::shipped}]}
                 {::tk/name ::paid
                  ::tk/transitions [{::tk/on ::ship ::tk/to ::shipped}]}
                 {::tk/name ::shipped}
