@@ -20,7 +20,7 @@
   {:db db :payments payments :mailer mailer})
 
 (defmethod ig/init-key :shop/router [_ {:keys [orders]}]
-  (ring/ring-handler (ring/router [(http/public-routes) (http/order-routes orders)]
+  (ring/ring-handler (ring/router [(http/public-routes) (http/status-routes orders) (http/order-routes orders)]
                                   {:data {:muuntaja m/instance :middleware [muuntaja/format-middleware]}})))
 
 (defmethod ig/init-key :shop/server [_ {:keys [port handler]}]

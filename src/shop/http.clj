@@ -17,6 +17,12 @@
 (defn public-routes []
   [["/public/health" {:name :public/health :get {:handler health}}]])
 
+(defn status [svc]
+  (fn [_] {:status 200 :body {:orders (count @(:db svc))}}))
+
+(defn status-routes [svc]
+  [["/public/status" {:name :public/status :get {:handler (status svc)}}]])
+
 (defn order-routes [svc]
   [["/api/orders" {:name :api.orders/create
                    :post {:handler (create-order svc)
