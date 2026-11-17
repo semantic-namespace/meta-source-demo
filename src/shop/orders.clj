@@ -24,3 +24,7 @@
     (swap! db assoc id (assoc o :order/state paid))
     (notify orders o)
     {:payment/receipt (str (:api-key payments) "/" id) :order/state paid}))
+
+(defn ^{:atlas.source/id :fn.orders/receipt-email} receipt-email
+  [{:keys [mailer]} {:user/keys [email] :order/keys [id]}]
+  (swap! (:outbox mailer) conj {:to email :subject (str "Receipt for " id)}))

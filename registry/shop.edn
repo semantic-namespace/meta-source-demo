@@ -38,6 +38,9 @@
                     :execution-function/context [:order/id]
                     :execution-function/response [:payment/receipt :order/state]
                     :execution-function/deps [:shop/db :shop/payments :fn.orders/notify]}
+ :fn.orders/receipt-email {:atlas/type :atlas/execution-function :atlas/aspects #{:domain/orders :operation/receipt}
+                           :execution-function/context [:user/email :order/id]
+                           :execution-function/deps [:shop/mailer]}
  :fn.orders/notify {:atlas/type :atlas/execution-function :atlas/aspects #{:domain/orders :operation/notify}
                     :execution-function/context [:user/email :order/id]
                     :execution-function/deps [:shop/mailer]
