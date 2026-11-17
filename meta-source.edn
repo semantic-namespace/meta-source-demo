@@ -13,7 +13,7 @@
          atlas.meta-source/pack {}}
  :deps {io.github.semantic-namespace/meta-source-packs
         {:git/url "https://github.com/semantic-namespace/meta-source-packs"
-         :git/sha "db7440789c5fcb790cb32a4adba17a417d4d62d4"}
+         :git/sha "43db9ec365c0692d7edc3094e7412738972d1adf"}
         io.github.semantic-namespace/atlas
         {:git/url "https://github.com/semantic-namespace/atlas"
          :git/sha "553be419162f5003efc96e010130eb8ec155f5bc" :deps/root "core"}}}
