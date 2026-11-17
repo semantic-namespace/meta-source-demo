@@ -4,7 +4,7 @@
 {:paths ["bb"]
  :deps {io.github.semantic-namespace/meta-source
         {:git/url "https://github.com/semantic-namespace/meta-source"
-         :git/sha "0ed92b233b150eaf96fecec9418b579de933ab44"}}
+         :git/sha "4f263b0fbe58562cb3593f90822fdc3afcfdd7bd"}}
  :tasks {meta-source {:doc "meta-source <where|uses|deps|data|check|summary|serve> [arg]"
                       :requires ([meta-source.cli])
                       :task (apply meta-source.cli/-main *command-line-args*)}
