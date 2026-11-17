@@ -1,0 +1,13 @@
+;; meta-source at a fixed commit, so the demo keeps answering the same way.
+;;   bb meta-source check --brief
+;;   bb meta-source uses :shop/db
+{:paths ["bb"]
+ :deps {io.github.semantic-namespace/meta-source
+        {:git/url "https://github.com/semantic-namespace/meta-source"
+         :git/sha "0ed92b233b150eaf96fecec9418b579de933ab44"}}
+ :tasks {meta-source {:doc "meta-source <where|uses|deps|data|check|summary|serve> [arg]"
+                      :requires ([meta-source.cli])
+                      :task (apply meta-source.cli/-main *command-line-args*)}
+         report {:doc "Each rule and what it applies to; reach with every key a dependency, and with keys typed"
+                 :requires ([report])
+                 :task (report/-main)}}}

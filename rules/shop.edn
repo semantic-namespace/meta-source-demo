@@ -1,0 +1,26 @@
+;; The team's rules, over the system, the routes, the data, the machine and
+;; the registry at once.
+{:rule/pii-readers-audited
+ {:doc "Whatever reads a PII key is audited"
+  :when {:= {:data/privacy :pii}}
+  :require [{:consumers {:all {:has :audit/logged}}}]}
+
+ :rule/public-off-db
+ {:doc "No route under /public reaches the database"
+  :when {:kind :reitit :matches {:reitit/path "^/public"}}
+  :require [{:reaches {:none {:id :shop/db}}}]}
+
+ :rule/payments-from-orders
+ {:doc "Only the orders domain, and the router and server in front of it, reach payments"
+  :when {:id :shop/payments}
+  :require [{:reached-by {:all {:or [{:= {:atlas/aspects :domain/orders}} {:id :shop/router} {:id :shop/server}]}}}]}
+
+ :rule/ship-only-when-paid
+ {:doc "An order reaches shipped only from paid"
+  :when {:id :shop.order/shipped}
+  :require [{:related-by {:tilakone/to {:all {:id :shop.order/paid}}}}]}
+
+ :rule/resources-released
+ {:doc "A component holding a resource releases it when the system stops"
+  :when {:has :component/holds-resource}
+  :require [{:has :integrant/halt-key!}]}}

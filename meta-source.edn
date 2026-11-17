@@ -1,0 +1,19 @@
+;; What meta-source reads, and with which packs: the system (integrant), the
+;; routes (reitit), the data shapes (malli), the order's life (tilakone), and
+;; what the team says about all of it (atlas, in registry/). Nothing is run.
+;;
+;;   bb meta-source check --brief
+{:src ["src"]
+ :registry ["registry"]
+ :rules ["rules"]
+ :packs {:integrant {:configs ["resources"] :pattern true}
+         :reitit {:pattern true}
+         :malli {:registries [shop.schema/registry]}
+         :tilakone {}
+         atlas.meta-source/pack {}}
+ :deps {io.github.semantic-namespace/meta-source-packs
+        {:git/url "https://github.com/semantic-namespace/meta-source-packs"
+         :git/sha "db7440789c5fcb790cb32a4adba17a417d4d62d4"}
+        io.github.semantic-namespace/atlas
+        {:git/url "https://github.com/semantic-namespace/atlas"
+         :git/sha "553be419162f5003efc96e010130eb8ec155f5bc" :deps/root "core"}}}

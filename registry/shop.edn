@@ -1,0 +1,54 @@
+;; What the code can't say: what each component, route and function is,
+;; what it needs, what data it reads and returns, and what the team decided.
+;; Facts on the ids integrant, reitit and tilakone already have; the
+;; functions are linked to their defns by :atlas.source/id.
+{;; ---- the system's components
+ :shop/db       {:atlas/type :atlas/structure-component :atlas/aspects #{:tier/foundation :domain/storage}
+                 :component/holds-resource true}
+ :shop/payments {:atlas/type :atlas/structure-component :atlas/aspects #{:tier/foundation :domain/payments}
+                 :data/privacy :pci}
+ :shop/mailer   {:atlas/type :atlas/structure-component :atlas/aspects #{:tier/foundation :domain/email}
+                 :component/holds-resource true}
+ :shop/orders   {:atlas/type :atlas/structure-component :atlas/aspects #{:tier/foundation :domain/orders}}
+ :shop/router   {:atlas/type :atlas/structure-component :atlas/aspects #{:tier/foundation :domain/http}}
+ :shop/server   {:atlas/type :atlas/structure-component :atlas/aspects #{:tier/foundation :protocol/http}
+                 :component/holds-resource true}
+
+ ;; ---- the routes
+ :public/health     {:atlas/type :atlas/interface-endpoint :atlas/aspects #{:tier/api :domain/ops}}
+ :api.orders/create {:atlas/type :atlas/interface-endpoint :atlas/aspects #{:tier/api :domain/orders :operation/create}
+                     :interface-endpoint/deps [:fn.orders/create]
+                     :audit/logged true}
+ :api.orders/fetch  {:atlas/type :atlas/interface-endpoint :atlas/aspects #{:tier/api :domain/orders :operation/read}
+                     :interface-endpoint/deps [:fn.orders/fetch]}
+ :api.orders/pay    {:atlas/type :atlas/interface-endpoint :atlas/aspects #{:tier/api :domain/orders :operation/pay}
+                     :interface-endpoint/deps [:fn.orders/pay]}
+
+ ;; ---- the order service's functions
+ :fn.orders/create {:atlas/type :atlas/execution-function :atlas/aspects #{:domain/orders :operation/create}
+                    :execution-function/context [:user/email :order/lines]
+                    :execution-function/response [:order/id :order/state]
+                    :execution-function/deps [:shop/db]
+                    :audit/logged true}
+ :fn.orders/fetch  {:atlas/type :atlas/execution-function :atlas/aspects #{:domain/orders :operation/read}
+                    :execution-function/context [:order/id]
+                    :execution-function/response [:order/id :order/lines :order/state]
+                    :execution-function/deps [:shop/db]}
+ :fn.orders/pay    {:atlas/type :atlas/execution-function :atlas/aspects #{:domain/orders :operation/pay}
+                    :execution-function/context [:order/id]
+                    :execution-function/response [:payment/receipt :order/state]
+                    :execution-function/deps [:shop/db :shop/payments :fn.orders/notify]}
+ :fn.orders/notify {:atlas/type :atlas/execution-function :atlas/aspects #{:domain/orders :operation/notify}
+                    :execution-function/context [:user/email :order/id]
+                    :execution-function/deps [:shop/mailer]
+                    :audit/logged true}
+
+ ;; ---- the data the shop holds
+ :user/email {:data/privacy :pii}
+
+ ;; ---- a decision, and what realizes it: the machine and the function
+ :decision/pay-before-ship
+ {:atlas/type :atlas/decision :atlas/aspects #{:domain/orders :status/active}
+  :decision/question "Can an order ship before it is paid?"
+  :decision/outcomes [:no]
+  :decision/realized-by [:shop.order/fsm :fn.orders/pay]}}

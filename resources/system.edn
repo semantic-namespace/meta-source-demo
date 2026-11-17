@@ -1,0 +1,7 @@
+;; The system: each component refers to what it needs.
+{:shop/db       {:url "mem:shop"}
+ :shop/payments {:api-key "pk_test_demo"}
+ :shop/mailer   {:from "orders@shop.example"}
+ :shop/orders   {:db #ig/ref :shop/db :payments #ig/ref :shop/payments :mailer #ig/ref :shop/mailer}
+ :shop/router   {:orders #ig/ref :shop/orders}
+ :shop/server   {:port 3000 :handler #ig/ref :shop/router}}
